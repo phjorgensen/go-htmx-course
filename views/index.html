@@ -1,0 +1,65 @@
+{{ block "index" . }}
+<!doctype html>
+<html lang="en">
+  {{ template "head" . }}
+
+  <body>
+    {{ template "navigation" . }}
+    <div id="main-content" />
+
+    <div id="user-info">
+      <button hx-get="/get-info" hx-target="#user-info" hx-swap="innerHTML">Reveal info</button>
+      {{ .Name }}
+    </div>
+
+    {{ template "error_handler" . }}
+  </body>
+</html>
+{{ end }}
+
+{{ block "head" . }}
+  <head>
+    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script
+      src="https://unpkg.com/htmx.org@1.9.10"
+      integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/css/index.css" />
+  </head>
+{{ end }}
+
+{{ block "navigation" . }}
+  <nav>
+    <a hx-get="/" hx-target="#main-content" href="#">Dashboard</a>
+    <a hx-get="/contacts" hx-target="#main-content" href="#">Contacts</a>
+  </nav>
+{{ end }}
+
+{{ block "error_handler" . }}
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("htmx:beforeSwap", (ev) => {
+        if (ev.detail.xhr.status === 422) {
+          ev.detail.shouldSwap = true;
+          ev.detail.isError = false;
+        }
+      });
+    });
+  </script>
+{{ end }}
+
+{{ block "name_card" . }}
+  <div>
+  	<p>User Personal Information:</p>
+  
+  	<ol>
+  		<li>Name: {{.Name}}</li>
+  		<li>Phone: {{.Phone}}</li>
+  		<li>Email: {{.Email}}</li>
+  	</ol>
+  </div>
+{{ end }}

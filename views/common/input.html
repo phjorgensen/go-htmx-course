@@ -1,0 +1,13 @@
+{{ block "input" . }}
+  {{ if .Label }}
+    <label for="{{ .Id }}">{{ .Label }}</label>
+  {{ end }}
+
+  <input
+    id="{{ .Id }}"
+    type="{{ .Type }}"
+    {{ if .Value }}
+      value="{{ .Value }}"
+    {{ end }}
+  />
+{{ end }}
